@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap');
+body {
+  margin-top: 30px;
+  font-family: 'Titillium Web', sans-serif;
+}
+.form-container {
+  width: 400px;
+  padding: 30px;
+}
+.container {
+  width: 800px;
+}
+h1, h2 {
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+h1 {
+  font-size: 20px;
+  text-transform: capitalize;
+}
+h2 {
+  font-weight: bold;
+}
+th {
+  text-transform: capitalize;
+}
+table .las {
+  font-size: 16px;
+}
+.control .las {
+  font-size: 24px;
+}
+.brand a img {
+  transition: all .1s ease-in-out;
+}
+.brand a:hover img {
+  transform: scale(1.25);
+}
+.brand img {
+  width: 32px;
+  margin: 0 17px;
+}
+.button {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+.navbar {
+  padding: 5px 0;
+  box-shadow: 0 3px 10px rgba(153, 153, 153, 0.15);
+}
