@@ -8,12 +8,15 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 
 class TwitterAuthController extends BaseController
 {
+    private $consumerKey;
+    private $consumerSecret;
+    private $oauthCallback;
+    
     public function __construct()
     {
-    
-        define('CONSUMER_KEY', 'VeYVirCutY5WCxGo2DiJjcqCM');
-        define('CONSUMER_SECRET', 'AqaK0XB2Cm2V6X8ukeIcM3Ky2EdKgLMIGu5owme3NwfXISmceO');
-        define('OAUTH_CALLBACK', base_url('twitter'));
+        $this->consumerKey = getenv('TWITTER_CONSUMER_KEY');
+        $this->consumerSecret = getenv('TWITTER_CONSUMER_SECRET');
+        $this->oauthCallback = getenv('TWITTER_OAUTH_CALLBACK');
     }
     
     public function index()
@@ -29,7 +32,7 @@ class TwitterAuthController extends BaseController
             return false;
         }
     
-        $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $requestToken['oauth_token'],
+        $connection = new TwitterOAuth($this->consumerKey, $this->consumerSecret, $requestToken['oauth_token'],
             $requestToken['oauth_token_secret']);
     
         if (! $this->request->getVar('oauth_verifier')) {
@@ -43,7 +46,7 @@ class TwitterAuthController extends BaseController
     
         $twitterAccessToken = $this->session->accessToken;
     
-        $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $twitterAccessToken['oauth_token'],
+        $connection = new TwitterOAuth($this->consumerKey, $this->consumerSecret, $twitterAccessToken['oauth_token'],
             $twitterAccessToken['oauth_token_secret']);
     
         $twitterProfile = $connection->get('account/verify_credentials', [
@@ -60,6 +63,8 @@ class TwitterAuthController extends BaseController
             // Redirect user to profile page
             return redirect()->to(base_url($this->session->profile));
         }
+        
+        return false;
     }
     
     public function login()
@@ -69,10 +74,10 @@ class TwitterAuthController extends BaseController
         $this->session->remove('twitterAccessToken');
     
         //
-        $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET);
+        $connection = new TwitterOAuth($this->consumerKey, $this->consumerSecret);
     
         $requestToken = $connection->oauth('oauth/request_token', [
-            'oauth_callback' => OAUTH_CALLBACK
+            'oauth_callback' => base_url($this->oauthCallback)
         ]);
     
         $this->session->set('oauthToken', $requestToken['oauth_token']);
@@ -85,5 +90,7 @@ class TwitterAuthController extends BaseController
         if ($this->session->has('oauthToken')) {
             return redirect()->to($this->authorizeURL);
         }
+        
+        return false;
     }
 }

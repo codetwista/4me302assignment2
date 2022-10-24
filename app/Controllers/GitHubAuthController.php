@@ -7,12 +7,13 @@ class GitHubAuthController extends BaseController
 {
     private $tokenURL;
     private $apiBaseURL;
+    private $oauthClientID;
+    private $oauthClientSecret;
     
     public function __construct()
     {
-        define('OAUTH2_CLIENT_ID', 'b74c4d6bb751d8769bbe');
-        define('OAUTH2_CLIENT_SECRET', 'baafced0261e100c63e04e874d904b1292f7d1f7');
-    
+        $this->oauthClientID = getenv('GITHUB_OAUTH2_CLIENT_ID');
+        $this->oauthClientSecret = getenv('GITHUB_OAUTH2_CLIENT_SECRET');
         $this->authorizeURL = 'https://github.com/login/oauth/authorize';
         $this->tokenURL = 'https://github.com/login/oauth/access_token';
         $this->apiBaseURL = 'https://api.github.com/';
@@ -30,8 +31,8 @@ class GitHubAuthController extends BaseController
             }
         
             $token = $this->apiRequest($this->tokenURL, [
-                'client_id' => OAUTH2_CLIENT_ID,
-                'client_secret' => OAUTH2_CLIENT_SECRET,
+                'client_id' => $this->oauthClientID,
+                'client_secret' => $this->oauthClientSecret,
                 'redirect_uri' => base_url('github'),
                 'state' => $this->session->state,
                 'code' => $this->request->getVar('code')
@@ -72,18 +73,13 @@ class GitHubAuthController extends BaseController
     
     public function login()
     {
-        // Display GitHub login button only if user in not logged in
-//        if (! $this->session->gitHubAccessToken) {
-//            return redirect()->to('login');
-//        }
-        
         // GitHub login
         if ($this->uri->getSegment(2) == 'login') {
             $this->session->set('state', bin2hex(random_bytes(20)));
             $this->session->remove('gitHubAccessToken');
         
             $params = [
-                'client_id' => OAUTH2_CLIENT_ID,
+                'client_id' => $this->oauthClientID,
                 'redirect_uri' => base_url('github'),
                 'scope' => 'user',
                 'state' => $this->session->state
@@ -91,6 +87,8 @@ class GitHubAuthController extends BaseController
         
             return redirect()->to($this->authorizeURL . '?' . http_build_query($params));
         }
+        
+        return false;
     }
     
     /**

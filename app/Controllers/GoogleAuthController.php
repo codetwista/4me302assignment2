@@ -9,17 +9,20 @@ use Google_Service_Oauth2;
 
 class GoogleAuthController extends BaseController
 {
+    private $clientID;
+    private $clientSecret;
+    
     public function __construct()
     {
-        define('CLIENT_ID', '880564247375-vp6aittsk15urblu3qqcinsrior0813f.apps.googleusercontent.com');
-        define('CLIENT_SECRET', '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');
+        $this->clientID = getenv('GOOGLE_CLIENT_ID');
+        $this->clientSecret = getenv('GOOGLE_CLIENT_SECRET');
     
         // Instantiate Google Client
         $this->googleClient = new Google_Client();
     
         // Set authentication parameters
-        $this->googleClient->setClientId(CLIENT_ID);
-        $this->googleClient->setClientSecret(CLIENT_SECRET);
+        $this->googleClient->setClientId($this->clientID);
+        $this->googleClient->setClientSecret($this->clientSecret);
         $this->googleClient->setRedirectUri(base_url('google'));
     
         // Add request scope
