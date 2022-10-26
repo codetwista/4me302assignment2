@@ -45,6 +45,8 @@ $routes->match(['get', 'post'], 'register', 'UserController::register');
 
 $routes->get('news', 'NewsController::index');
 
+$routes->get('researcher/map', 'ResearcherController::index');
+
 $routes->get('github', 'GitHubAuthController::index');
 $routes->get('github/login', 'GitHubAuthController::login');
 

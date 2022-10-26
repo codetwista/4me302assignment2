@@ -13,7 +13,8 @@ class HomeController extends BaseController
         
         // Render default view
         return view('home', [
-            'title' => 'Welcome'
+            'title' => 'Welcome',
+            'uri' => $this->uri->setSilent()
             ]);
     }
 }

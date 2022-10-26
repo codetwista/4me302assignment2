@@ -27,7 +27,8 @@ class DashboardController extends BaseController
                     ->where('user.Role_IDrole', 1)
                     ->get()
                     ->getResult(),
-                'userData' => $userData
+                'userData' => $userData,
+                'uri' => $this->uri
             ]);
         }
     

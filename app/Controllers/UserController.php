@@ -104,7 +104,8 @@ class UserController extends BaseController
         return view('register', [
             'title' => 'Register',
             'roles' => $this->db->table('role')->get()->getResult(),
-            'validation' => $this->validator
+            'validation' => $this->validator,
+            'uri' => $this->uri
         ]);
     }
     
@@ -131,7 +132,8 @@ class UserController extends BaseController
         // Render login view
         return view('login', [
             'title' => 'Log in',
-            'data' => $data
+            'data' => $data,
+            'uri' => $this->uri
         ]);
     }
     

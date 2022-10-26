@@ -17,6 +17,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
+    <?php if ($uri->getSegment(2) === 'map'): ?>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    
+        <link rel="stylesheet" type="text/css" href="<?= base_url('css/map.css') ?>" />
+        <script type="module" src="<?= base_url('js/index.js') ?>"></script>
+    <?php endif ?>
+    
     </head>
     <body>
         <header>
@@ -84,5 +91,9 @@
         <main>
 <?= $this->renderSection('content') ?>
         </main>
+        <script
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKK6yNjFVhQsE3pl2KkURu4RWQSy8QHFs&callback=initMap&v=weekly"
+                defer
+        ></script>
     </body>
 </html>
